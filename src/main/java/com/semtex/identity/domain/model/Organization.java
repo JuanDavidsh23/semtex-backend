@@ -17,12 +17,13 @@ public class Organization {
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    /** Crea una organización nueva. */
-    public Organization(String name, String slug) {
-        this(UUID.randomUUID(), name, slug, true, LocalDateTime.now(), LocalDateTime.now());
+    /** Factory de creación (id y timestamps generados). */
+    public static Organization create(String name, String slug) {
+        LocalDateTime now = LocalDateTime.now();
+        return new Organization(UUID.randomUUID(), name, slug, true, now, now);
     }
 
-    /** Reconstruye desde persistencia. */
+    /** Constructor canónico (también usado por el mapper de persistencia). */
     public Organization(UUID id, String name, String slug, boolean active,
                         LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
