@@ -20,13 +20,13 @@ public class User {
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    /** Crea un usuario nuevo. */
-    public User(String email, Role role, UUID organizationId) {
-        this(UUID.randomUUID(), email, role, organizationId, true, null,
-                LocalDateTime.now(), LocalDateTime.now());
+    /** Factory de creación (id y timestamps generados). */
+    public static User create(String email, Role role, UUID organizationId) {
+        LocalDateTime now = LocalDateTime.now();
+        return new User(UUID.randomUUID(), email, role, organizationId, true, null, now, now);
     }
 
-    /** Reconstruye desde persistencia. */
+    /** Constructor canónico (también usado por el mapper de persistencia). */
     public User(UUID id, String email, Role role, UUID organizationId,
                 boolean active, LocalDateTime lastLoginAt,
                 LocalDateTime createdAt, LocalDateTime updatedAt) {
