@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import com.semtex.shared.persistence.TenantFilters;
+import org.hibernate.annotations.Filter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -13,6 +15,7 @@ import java.util.UUID;
  */
 @Entity
 @Table(name = "documents")
+@Filter(name = TenantFilters.TENANT_FILTER)
 public class DocumentJpaEntity {
 
     @Id
