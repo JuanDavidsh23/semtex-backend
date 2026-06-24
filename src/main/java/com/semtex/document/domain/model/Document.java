@@ -20,14 +20,14 @@ public class Document {
     private final UUID uploadedBy;
     private final LocalDateTime createdAt;
 
-    /** Crea un documento nuevo. */
-    public Document(String name, String storagePath, String mimeType,
-                    Long fileSizeBytes, UUID organizationId, UUID uploadedBy) {
-        this(UUID.randomUUID(), name, storagePath, mimeType, fileSizeBytes,
+    /** Factory de creación (id y timestamp generados). */
+    public static Document create(String name, String storagePath, String mimeType,
+                                  Long fileSizeBytes, UUID organizationId, UUID uploadedBy) {
+        return new Document(UUID.randomUUID(), name, storagePath, mimeType, fileSizeBytes,
                 organizationId, uploadedBy, LocalDateTime.now());
     }
 
-    /** Reconstruye desde persistencia. */
+    /** Constructor canónico (también usado por el mapper de persistencia). */
     public Document(UUID id, String name, String storagePath, String mimeType,
                     Long fileSizeBytes, UUID organizationId, UUID uploadedBy,
                     LocalDateTime createdAt) {
