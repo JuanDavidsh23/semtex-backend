@@ -23,14 +23,14 @@ public class FinancialRecord {
     private final Map<String, Object> rowData;
     private final LocalDateTime createdAt;
 
-    /** Crea un registro nuevo. */
-    public FinancialRecord(UUID documentId, UUID organizationId, String sheetName,
-                           Integer rowIndex, Map<String, Object> rowData) {
-        this(UUID.randomUUID(), documentId, organizationId, sheetName, rowIndex,
+    /** Factory de creación (id y timestamp generados). */
+    public static FinancialRecord create(UUID documentId, UUID organizationId, String sheetName,
+                                         Integer rowIndex, Map<String, Object> rowData) {
+        return new FinancialRecord(UUID.randomUUID(), documentId, organizationId, sheetName, rowIndex,
                 rowData, LocalDateTime.now());
     }
 
-    /** Reconstruye desde persistencia. */
+    /** Constructor canónico (también usado por el mapper de persistencia). */
     public FinancialRecord(UUID id, UUID documentId, UUID organizationId, String sheetName,
                            Integer rowIndex, Map<String, Object> rowData, LocalDateTime createdAt) {
         this.id = id;
