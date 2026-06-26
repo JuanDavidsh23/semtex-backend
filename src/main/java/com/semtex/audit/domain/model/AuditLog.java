@@ -19,12 +19,7 @@ public class AuditLog {
     private final UUID performedBy;  // null si fue acción del sistema
     private final LocalDateTime createdAt;
 
-    public AuditLog(AuditAction action, String description, Map<String, Object> metadata,
-                    UUID organizationId, UUID performedBy) {
-        this(UUID.randomUUID(), action, description, metadata, organizationId, performedBy,
-                LocalDateTime.now());
-    }
-
+    /** Constructor canónico (también usado por el mapper de persistencia). */
     public AuditLog(UUID id, AuditAction action, String description, Map<String, Object> metadata,
                     UUID organizationId, UUID performedBy, LocalDateTime createdAt) {
         this.id = id;
@@ -38,43 +33,49 @@ public class AuditLog {
 
     // ---- Factories de dominio (verbos de negocio) ----
 
+    private static AuditLog of(AuditAction action, String description, Map<String, Object> metadata,
+                              UUID organizationId, UUID performedBy) {
+        return new AuditLog(UUID.randomUUID(), action, description, metadata,
+                organizationId, performedBy, LocalDateTime.now());
+    }
+
     public static AuditLog financialQuery(UUID organizationId, UUID userId, String query) {
-        return new AuditLog(AuditAction.FINANCIAL_QUERY, "Consulta financiera: " + query,
+        return of(AuditAction.FINANCIAL_QUERY, "Consulta financiera: " + query,
                 Map.of("query", query), organizationId, userId);
     }
 
     public static AuditLog emailSent(UUID organizationId, UUID userId, String emailTo) {
-        return new AuditLog(AuditAction.EMAIL_SENT, "Email enviado a: " + emailTo,
+        return of(AuditAction.EMAIL_SENT, "Email enviado a: " + emailTo,
                 Map.of("email_to", emailTo), organizationId, userId);
     }
 
     public static AuditLog emailFailed(UUID organizationId, UUID userId, String emailTo, String reason) {
-        return new AuditLog(AuditAction.EMAIL_FAILED, "Fallo al enviar email a: " + emailTo,
+        return of(AuditAction.EMAIL_FAILED, "Fallo al enviar email a: " + emailTo,
                 Map.of("email_to", emailTo, "reason", reason == null ? "" : reason), organizationId, userId);
     }
 
     public static AuditLog documentUploaded(UUID organizationId, UUID userId, String fileName) {
-        return new AuditLog(AuditAction.DOCUMENT_UPLOADED, "Documento subido: " + fileName,
+        return of(AuditAction.DOCUMENT_UPLOADED, "Documento subido: " + fileName,
                 Map.of("file_name", fileName), organizationId, userId);
     }
 
     public static AuditLog userCreated(UUID organizationId, UUID performedBy, String email) {
-        return new AuditLog(AuditAction.USER_CREATED, "Usuario creado: " + email,
+        return of(AuditAction.USER_CREATED, "Usuario creado: " + email,
                 Map.of("email", email), organizationId, performedBy);
     }
 
     public static AuditLog userDeactivated(UUID organizationId, UUID performedBy, String email) {
-        return new AuditLog(AuditAction.USER_DEACTIVATED, "Usuario desactivado: " + email,
+        return of(AuditAction.USER_DEACTIVATED, "Usuario desactivado: " + email,
                 Map.of("email", email), organizationId, performedBy);
     }
 
     public static AuditLog roleChanged(UUID organizationId, UUID performedBy, String email, String newRole) {
-        return new AuditLog(AuditAction.ROLE_CHANGED, "Rol cambiado para " + email + " a " + newRole,
+        return of(AuditAction.ROLE_CHANGED, "Rol cambiado para " + email + " a " + newRole,
                 Map.of("email", email, "new_role", newRole), organizationId, performedBy);
     }
 
     public static AuditLog userLogin(UUID organizationId, UUID userId, String email) {
-        return new AuditLog(AuditAction.USER_LOGIN, "Login de usuario: " + email,
+        return of(AuditAction.USER_LOGIN, "Login de usuario: " + email,
                 Map.of("email", email), organizationId, userId);
     }
 
