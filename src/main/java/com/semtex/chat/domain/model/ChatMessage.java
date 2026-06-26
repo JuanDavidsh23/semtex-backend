@@ -19,14 +19,7 @@ public class ChatMessage {
     private final Integer tokensUsed;
     private final LocalDateTime createdAt;
 
-    /** Crea un mensaje nuevo. */
-    public ChatMessage(MessageRole role, String content, UUID organizationId,
-                       UUID userId, UUID documentId, Integer tokensUsed) {
-        this(UUID.randomUUID(), role, content, organizationId, userId, documentId,
-                tokensUsed, LocalDateTime.now());
-    }
-
-    /** Reconstruye desde persistencia. */
+    /** Constructor canónico (también usado por el mapper de persistencia). */
     public ChatMessage(UUID id, MessageRole role, String content, UUID organizationId,
                        UUID userId, UUID documentId, Integer tokensUsed, LocalDateTime createdAt) {
         this.id = id;
@@ -40,12 +33,14 @@ public class ChatMessage {
     }
 
     public static ChatMessage user(String content, UUID organizationId, UUID userId, UUID documentId) {
-        return new ChatMessage(MessageRole.USER, content, organizationId, userId, documentId, null);
+        return new ChatMessage(UUID.randomUUID(), MessageRole.USER, content, organizationId, userId,
+                documentId, null, LocalDateTime.now());
     }
 
     public static ChatMessage agent(String content, UUID organizationId, UUID userId,
                                     UUID documentId, Integer tokensUsed) {
-        return new ChatMessage(MessageRole.AGENT, content, organizationId, userId, documentId, tokensUsed);
+        return new ChatMessage(UUID.randomUUID(), MessageRole.AGENT, content, organizationId, userId,
+                documentId, tokensUsed, LocalDateTime.now());
     }
 
     public boolean isFromUser()  { return role == MessageRole.USER; }
