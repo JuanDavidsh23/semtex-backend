@@ -1,8 +1,11 @@
 package com.semtex.chat.infrastructure.in.web.dto;
 
+import com.semtex.chat.domain.model.ChatMessage;
+import com.semtex.chat.domain.model.MessageRole;
 import com.semtex.financial.infrastructure.in.web.dto.FinancialRecordDtos.RecordResponse;
 import jakarta.validation.constraints.NotBlank;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,4 +23,14 @@ public final class ChatDtos {
             String agentResponse,
             List<RecordResponse> relevantRecords
     ) {}
+
+    public record MessageResponse(
+            UUID id, MessageRole role, String content, UUID userId, UUID documentId,
+            Integer tokensUsed, LocalDateTime createdAt
+    ) {
+        public static MessageResponse from(ChatMessage m) {
+            return new MessageResponse(m.getId(), m.getRole(), m.getContent(), m.getUserId(),
+                    m.getDocumentId(), m.getTokensUsed(), m.getCreatedAt());
+        }
+    }
 }
