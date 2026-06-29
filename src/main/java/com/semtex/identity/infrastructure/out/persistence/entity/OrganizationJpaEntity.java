@@ -6,8 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -16,16 +14,12 @@ import java.util.UUID;
  * Entidad JPA de {@code organizations}. Vive SOLO en infraestructura;
  * el dominio usa {@link com.semtex.identity.domain.model.Organization}.
  *
- * Declara el {@code @FilterDef} global de tenant (condición por defecto sobre
- * {@code organization_id}) y se filtra a sí misma por su {@code id} (su id ES el tenant).
+ * El {@code @FilterDef} global de tenant se declara en el {@code package-info} de
+ * {@code com.semtex.shared.persistence}; aquí la organización se filtra a sí misma por su
+ * {@code id} (su id ES el tenant).
  */
 @Entity
 @Table(name = "organizations")
-@FilterDef(
-        name = TenantFilters.TENANT_FILTER,
-        parameters = @ParamDef(name = TenantFilters.TENANT_PARAM, type = UUID.class),
-        defaultCondition = TenantFilters.BY_ORGANIZATION
-)
 @Filter(name = TenantFilters.TENANT_FILTER, condition = TenantFilters.BY_ID)
 public class OrganizationJpaEntity {
 
