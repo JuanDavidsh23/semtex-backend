@@ -1,0 +1,9 @@
+# No copiar artefactos ni secretos locales a la imagen.
+target/
+.git/
+.idea/
+*.iml
+# El application.properties local tiene secretos y NO debe quedar en la imagen
+# (en producción se usa application-prod.properties + variables de entorno).
+src/main/resources/application.properties
+*.log
