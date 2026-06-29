@@ -2,6 +2,7 @@ package com.semtex.infrastructure.out.ai;
 
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,13 +11,14 @@ import java.time.Duration;
 /**
  * Configura el modelo de chat de Ollama (Llama 3.1 8B con tool-calling nativo).
  *
- * El timeout evita que una inferencia colgada bloquee indefinidamente el hilo HTTP (fix del
- * RestClient sin timeout). La llamada al modelo se ejecuta fuera de cualquier transacción de BD.
+ * Solo se activa con {@code semtex.ai.provider=ollama} (modo local/privado). El proveedor por
+ * defecto es OpenAI ({@link OpenAiConfig}). El timeout evita que una inferencia colgada bloquee el hilo.
  */
 @Configuration
 public class OllamaConfig {
 
     @Bean
+    @ConditionalOnProperty(name = "semtex.ai.provider", havingValue = "ollama")
     public OllamaChatModel ollamaChatModel(
             @Value("${semtex.ai.base-url:http://localhost:11434}") String baseUrl,
             @Value("${semtex.ai.model:llama3.1:8b}") String model,

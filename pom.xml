@@ -117,6 +117,12 @@
             <artifactId>langchain4j-ollama</artifactId>
             <version>${langchain4j.version}</version>
         </dependency>
+        <!-- OpenAI-compatible (OpenAI / Groq): modelo de chat por API HTTP -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-open-ai</artifactId>
+            <version>${langchain4j.version}</version>
+        </dependency>
 
         <!-- ================= Email ================= -->
         <dependency>
