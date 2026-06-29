@@ -7,8 +7,8 @@ target/
 .vscode/
 *.iml
 
-# Local and secret configuration
-application.properties
+# Local and secret configuration (real config stays out of git; test fixtures are tracked)
+/application.properties
 src/main/resources/application.properties
 .env
 *.env
