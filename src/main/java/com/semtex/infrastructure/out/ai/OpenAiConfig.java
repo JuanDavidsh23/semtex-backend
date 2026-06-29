@@ -35,6 +35,7 @@ public class OpenAiConfig {
                 .modelName(model)
                 .temperature(0.2)
                 .timeout(Duration.ofSeconds(timeoutSeconds))
+                .maxRetries(2) // reintenta picos transitorios (p. ej. rate-limit por minuto)
                 .build();
     }
 }
