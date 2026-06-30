@@ -1,16 +1,23 @@
 # Semtex Backend
 
 Copiloto administrativo/financiero con IA para PyMEs. Backend Spring Boot 3 (Java 21) con
-**arquitectura hexagonal modular por bounded context**.
+**arquitectura hexagonal (puertos y adaptadores)** en monolito.
 
 > ✅ Release **1.0.0** — MVP funcional con tenancy por defecto, agente IA con function calling y auditoría AOP.
 
-## Contextos
+## Arquitectura
 
-`shared · identity · document · financial · chat · email · audit`
+Hexagonal clásica, organizada por capas con la regla de dependencia `infrastructure → application → domain`:
 
-Cada contexto respeta la regla de dependencia `infrastructure → application → domain`.
-El dominio es POJO puro (sin Spring/JPA), verificado con ArchUnit.
+```
+com.semtex
+├── domain          # núcleo POJO puro: model, port/in (casos de uso), port/out (puertos), exception
+├── application     # servicios de aplicación que orquestan el dominio (service)
+└── infrastructure  # adaptadores: in/rest, out/{persistence, ai, email, storage, parsing},
+                    #              security, tenant, config, aspect
+```
+
+El dominio no conoce Spring ni JPA; la regla de dependencia se verifica con **ArchUnit**.
 
 ## Características 1.0.0
 
